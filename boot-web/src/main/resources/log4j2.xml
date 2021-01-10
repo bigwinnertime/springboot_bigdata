@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration>
+    <Properties>
+        <!-- 日志存放的目录 -->
+        <Property name="LOG_HOME" value="${sys:user.dir}/logs/"/>
+        <!-- 日志存档的目录 -->
+        <Property name="LOG_ARCHIVE" value="${sys:user.dir}/logs/archive"/>
+        <!-- 模块名称 -->
+        <Property name="LOG_MODULE_NAME" value="springBootDemo"/>
+        <!-- interval属性用来指定多久滚动一次，单位根据filePattern变化 -->
+        <Property name="LOG_TIME" value="1"/>
+        <!-- 日志文件大小，超过这个大小将滚动一次 -->
+        <Property name="LOG_MAX_SIZE" value="150 MB"/>
+        <!-- 同一个文件名时(只有最后一位-%i不同)，生成多少个文件后开始覆盖 -->
+        <Property name="LOG_MAX_COVER" value="100"/>
+        <!-- 输出日志的格式 -->
+        <Property name="LOG_PATTERN" value="%d{yyyy-MM-dd HH:mm:ss} [%t] %-5level %logger{36} - %msg%n"/>
+        <!-- 输出日志的格式(带颜色) -->
+        <Property name="LOG_PATTERN_CONSOLE"
+                  value="%red{%d{yyyy-MM-dd HH:mm:ss}} %blue{[%t]} %highlight{%-5level} %green{%logger{36}} - %cyan{%msg%n}"/>
+    </Properties>
+
+    <Appenders>
+        <!-- 控制台输出 -->
+        <Console name="Console" target="SYSTEM_OUT">
+            <!--输出日志的格式-->
+            <PatternLayout pattern="${LOG_PATTERN_CONSOLE}"/>
+        </Console>
+
+        <!--
+            根据上面的配置，这个会打印出所有的debug\info\warn级别的日志，
+            每次大小超过 150MB 或者 每1天会滚动一次，
+            日志会按年月建立的文件夹，建立文件进行压缩存档
+         -->
+        <!--异步日志会自动批量刷新，所以将immediateFlush属性设置为false-->
+        <RollingRandomAccessFile name="DebugLog" fileName="${LOG_HOME}/${LOG_MODULE_NAME}-debug.log"
+                                 filePattern="${LOG_ARCHIVE}/${LOG_MODULE_NAME}/%d{yyyy-MM}/debug-%d{yyyy-MM-dd}-%i.log.gz">
+            <!-- off > fatal > error > warn > info > debug > trace > all -->
+            <!-- ACCEPT(接受)，DENY(拒绝)，NEUTRAL(中立) -->
+            <Filters>
+                <!-- 如果是error级别以上的拒绝，以下的保持中立 -->
+                <ThresholdFilter level="error" onMatch="DENY" onMismatch="NEUTRAL"/>
+                <!-- 在上一个拦截器基础上，如果是debug级别以上的接受，以下的拒绝 -->
+                <ThresholdFilter level="debug" onMatch="ACCEPT" onMismatch="DENY"/>
+            </Filters>
+            <PatternLayout pattern="${LOG_PATTERN}"/>
+            <Policies>
+                <!-- 滚动一次就是打包一次 -->
+                <!--
+                interval属性：用来指定多久滚动一次，
+                根据当前filePattern的命名规则的时间最小单位设置
+                当filePattern的%d{yyyy-MM-dd HH-mm-ss} interval=1，就是1秒生成一个文件(压缩包)，
+                当filePattern的%d{yyyy-MM-dd} interval=1，就是1天生成一个文件(压缩包)，
+                 -->
+                <!--
+                modulate属性：指是否应调整时间间隔以使下一次滚动发生在时间间隔边界（就是0点或者0分）上。
+                如果项目是小时，modulate: false，当前时间是3点，间隔是4，则第一次滚动将在4点发生，
+                然后下一个滚动将在8点，12点，16点等发生。
+                -->
+                <TimeBasedTriggeringPolicy interval="${LOG_TIME}" modulate="false"/>
+                <!-- 日志超过这个值，就会滚动一次。单位有：KB，MB，GB -->
+                <SizeBasedTriggeringPolicy size="${LOG_MAX_SIZE}"/>
+            </Policies>
+            <!-- 这里max，可以说是代表filePattern中 %i 的最大值了，默认值为7-->
+            <DefaultRolloverStrategy max="${LOG_MAX_COVER}"/>
+        </RollingRandomAccessFile>
+
+
+        <!--
+            根据上面的配置，这个会打印出所有的info\warn级别的日志，
+            每次大小超过 150MB 或者 每1天会滚动一次，
+            日志会按年月建立的文件夹，建立文件进行压缩存档
+         -->
+        <!--异步日志会自动批量刷新，所以将immediateFlush属性设置为false-->
+        <RollingRandomAccessFile name="InfoLog" fileName="${LOG_HOME}/${LOG_MODULE_NAME}-info.log"
+                                 filePattern="${LOG_ARCHIVE}/${LOG_MODULE_NAME}/%d{yyyy-MM}/info-%d{yyyy-MM-dd}-%i.log.gz">
+            <!-- off > fatal > error > warn > info > debug > trace > all -->
+            <!-- ACCEPT(接受)，DENY(拒绝)，NEUTRAL(中立) -->
+            <Filters>
+                <!-- 如果是error级别以上的拒绝，以下的保持中立 -->
+                <ThresholdFilter level="error" onMatch="DENY" onMismatch="NEUTRAL"/>
+                <!-- 在上一个拦截器基础上，如果是info级别以上的接受，以下的拒绝 -->
+                <ThresholdFilter level="info" onMatch="ACCEPT" onMismatch="DENY"/>
+            </Filters>
+            <PatternLayout pattern="${LOG_PATTERN}"/>
+            <Policies>
+                <!-- 滚动一次就是打包一次 -->
+                <!--
+                interval属性：用来指定多久滚动一次，
+                根据当前filePattern的命名规则的时间最小单位设置
+                当filePattern的%d{yyyy-MM-dd HH-mm-ss} interval=1，就是1秒生成一个文件(压缩包)，
+                当filePattern的%d{yyyy-MM-dd} interval=1，就是1天生成一个文件(压缩包)，
+                 -->
+                <!--
+                modulate属性：指是否应调整时间间隔以使下一次滚动发生在时间间隔边界（就是0点或者0分）上。
+                如果项目是小时，modulate: false，当前时间是3点，间隔是4，则第一次滚动将在4点发生，
+                然后下一个滚动将在8点，12点，16点等发生。
+                -->
+                <TimeBasedTriggeringPolicy interval="${LOG_TIME}" modulate="false"/>
+                <!-- 日志超过这个值，就会滚动一次。单位有：KB，MB，GB -->
+                <SizeBasedTriggeringPolicy size="${LOG_MAX_SIZE}"/>
+            </Policies>
+            <!-- 这里max，可以说是代表filePattern中 %i 的最大值了，默认值为7-->
+            <DefaultRolloverStrategy max="${LOG_MAX_COVER}"/>
+        </RollingRandomAccessFile>
+
+        <!--
+            只记录error级别以上的日志，
+            每次大小超过 150MB 或者每1天会滚动一次，
+            日志会按年月建立的文件夹，建立文件进行压缩存档
+        -->
+        <RollingRandomAccessFile name="ErrorLog" fileName="${LOG_HOME}/${LOG_MODULE_NAME}-error.log"
+                                 filePattern="${LOG_ARCHIVE}/${LOG_MODULE_NAME}/%d{yyyy-MM}/error-%d{yyyy-MM-dd}-%i.log.gz">
+            <Filters>
+                <ThresholdFilter level="error" onMatch="ACCEPT" onMismatch="DENY"/>
+            </Filters>
+            <PatternLayout pattern="${LOG_PATTERN}"/>
+            <Policies>
+                <TimeBasedTriggeringPolicy interval="${LOG_TIME}" modulate="false"/>
+                <SizeBasedTriggeringPolicy size="${LOG_MAX_SIZE}"/>
+            </Policies>
+            <DefaultRolloverStrategy max="${LOG_MAX_COVER}"/>
+        </RollingRandomAccessFile>
+
+    </Appenders>
+
+    <Loggers>
+        <!--
+            level="TRACE"，可以查看sql语句的参数；
+            additivity：默认值为true，配置为false可以避免日志重复打印。
+        -->
+        <logger name="org.apache.ibatis" level="TRACE" additivity="false">
+            <AppenderRef ref="Console"/>
+        </logger>
+        <!-- 开发环境使用 -->
+        <Root level="info">
+            <AppenderRef ref="Console"/>
+            <AppenderRef ref="InfoLog"/>
+            <AppenderRef ref="ErrorLog"/>
+        </Root>
+
+        <!-- 正式环境使用 -->
+        <!--
+        <Root level="info">
+            <AppenderRef ref="InfoLog"/>
+            <AppenderRef ref="DebugLog"/>
+            <AppenderRef ref="ErrorLog"/>
+        </Root>
+        -->
+    </Loggers>
+
+</Configuration>

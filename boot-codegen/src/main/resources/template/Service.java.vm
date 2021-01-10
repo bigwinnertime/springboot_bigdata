@@ -1,0 +1,53 @@
+package ${package}.${moduleName}.service;
+
+import org.bigwinner.core.parent.BaseService;
+import org.springframework.beans.factory.annotation.Autowired;
+import ${package}.${moduleName}.domain.entity.${className}Entity;
+import ${package}.${moduleName}.domain.mapper.${className}Mapper;
+##import com.baomidou.mybatisplus.core.metadata.IPage;
+##import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+##import com.baomidou.mybatisplus.extension.service.IService;
+
+/**
+ * ${comments}
+ * @author ${author}
+ * @date ${datetime}
+ */
+@Service
+public class ${className}Service extends BaseService {
+
+    @Autowired
+    private ${className}Mapper ${classname}Mapper;
+
+    /**
+    * 新增${comments}
+    * @param ${classname}
+    */
+    public void sava${className}(${className}Entity ${classname}){
+        ${classname}Mapper.insert(${classname});
+    }
+
+    /**
+     * 修改${comments}
+     * @param ${classname}
+     */
+    public void update${className}(${className}Entity ${classname}){
+            ${classname}Mapper.updateById(${classname});
+    }
+
+    /**
+     * 根据id删除${comments}
+     * @param id
+     */
+    public void delete${className}ById(Integer id){
+            ${classname}Mapper.deleteById(id);
+    }
+
+    /**
+     * 根据id查询${comments}
+     * @param id
+     */
+    public ${className}Entity find${className}ById(Integer id){
+        return ${classname}Mapper.selectById(id);
+    }
+}

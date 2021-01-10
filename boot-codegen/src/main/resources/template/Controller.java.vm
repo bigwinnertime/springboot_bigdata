@@ -1,0 +1,79 @@
+package ${package}.${moduleName}.rest;
+
+import org.bigwinner.core.parent.BaseRest;
+import io.swagger.annotations.Api;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+import ${package}.${moduleName}.service.${className}Service;
+/**
+ * ${comments}
+ * @author ${author}
+ * @date ${datetime}
+ */
+@RestController
+@RequestMapping("/${pathName}")
+@Api(tags = "${comments}")
+public class ${className}Rest extends BaseRest{
+
+    @Autowired
+    private  ${className}Service ${classname}Service;
+
+##    /**
+##     * 分页查询
+##     * @param page 分页对象
+##     * @param ${classname} ${comments}
+##     * @return
+##     */
+##    @ApiOperation("${comments}分页查询")
+##    @GetMapping("/page")
+##    public R get${className}Page(Page page, ${className} ${classname}) {
+##        return new R<>(${classname}Service.page(page, Wrappers.query(${classname})));
+##    }
+
+
+##    /**
+##     * 通过id查询${comments}
+##     * @param ${pk.lowerAttrName} id
+##     * @return R
+##     */
+##    @ApiOperation("通过id查询${comments}")
+##    @GetMapping("/{${pk.lowerAttrName}}")
+##    public Object getById(@PathVariable("${pk.lowerAttrName}") ${pk.attrType} ${pk.lowerAttrName}) {
+##        return ${classname}Service.getById(${pk.lowerAttrName});
+##    }
+
+##    /**
+##     * 新增${comments}
+##     * @param ${classname} ${comments}
+##     * @return R
+##     */
+##    @ApiOperation("新增${comments}")
+##    @PostMapping
+##    public Object save(@RequestBody ${className} ${classname}) {
+##        return ${classname}Service.save(${classname});
+##    }
+
+##    /**
+##     * 修改${comments}
+##     * @param ${classname} ${comments}
+##     * @return R
+##     */
+##    @ApiOperation("修改${comments}")
+##    @PutMapping
+##    public Object updateById(@RequestBody ${className} ${classname}) {
+##        return  ${classname}Service.updateById(${classname});
+##    }
+
+##    /**
+##     * 通过id删除${comments}
+##     * @param ${pk.lowerAttrName} id
+##     * @return R
+##     */
+##    @ApiOperation("删除${comments}")
+##    @DeleteMapping("/{${pk.lowerAttrName}}")
+##    public Object removeById(@PathVariable ${pk.attrType} ${pk.lowerAttrName}) {
+##        return ${classname}Service.removeById(${pk.lowerAttrName});
+##    }
+
+}

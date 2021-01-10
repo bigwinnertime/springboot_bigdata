@@ -1,0 +1,26 @@
+package ${package}.${moduleName}.domain.entity;
+
+import com.baomidou.mybatisplus.annotation.TableName;
+import io.swagger.annotations.ApiModelProperty;
+import lombok.Data;
+
+/**
+ * ${comments}
+ * @author ${author}
+ * @date ${datetime}
+ */
+@Data
+@TableName("${tableName}")
+public class ${className}Entity {
+
+#foreach ($column in $columns)
+    /**
+     * $column.comments
+     */
+    @ApiModelProperty("$column.comments")
+    #if($column.columnName == $pk.columnName)
+    #end
+    private $column.attrType $column.lowerAttrName;
+#end
+
+}
