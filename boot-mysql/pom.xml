@@ -14,6 +14,7 @@
         <mysql.connector.version>8.0.16</mysql.connector.version>
         <mybatis.plus.version>3.2.0</mybatis.plus.version>
         <alibaba.druid.version>1.1.21</alibaba.druid.version>
+        <shardingsphere.version>4.1.1</shardingsphere.version>
     </properties>
 
     <dependencies>
@@ -38,6 +39,12 @@
             <groupId>com.baomidou</groupId>
             <artifactId>mybatis-plus-generator</artifactId>
             <version>${mybatis.plus.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.shardingsphere</groupId>
+            <artifactId>sharding-jdbc-core</artifactId>
+            <version>${shardingsphere.version}</version>
         </dependency>
     </dependencies>
 

@@ -1,0 +1,42 @@
+################################################
+##  数据源配置
+################################################
+sharding:
+  jdbc:
+    datasource:
+      type: com.alibaba.druid.pool.DruidDataSource
+      driver-class-name: com.mysql.jdbc.Driver
+      url: jdbc:mysql://192.168.1.5:3306/demo_app
+      username: root
+      password: 123456
+      # 初始连接数
+      initialSize: 5
+      # 最小连接数
+      minIdle: 5
+      # 最大连接池数量
+      maxActive: 20
+      # 配置获取连接等待超时的时间
+      maxWait: 60000
+      # 用来检测连接是否有效的sql
+      validationQuery: SELECT 1 FROM DUAL
+      # 配置间隔多久才进行一次检测，检测需要关闭的空闲连接，单位是毫秒
+      timeBetweenEvictionRunsMillis: 60000
+      # 配置一个连接在池中最小生存的时间，单位是毫秒
+      minEvictableIdleTimeMillis: 300000
+
+################################################
+##  分表配置
+################################################
+
+    config:
+      sharding:
+        dbname: demo_app
+        tables:
+          # 分表前缀
+          tablename-prefix: app_log_demo_
+          # 分表后缀
+          tablename-suffix: _$->{10001..10005}
+          # 分表字段
+          sharding-column: OPERATE_TIME
+          sharding-names: 10001,10002,10003,10004,10005
+
