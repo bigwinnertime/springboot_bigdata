@@ -6,7 +6,7 @@
         <!-- 日志存档的目录 -->
         <Property name="LOG_ARCHIVE" value="${sys:user.dir}/logs/archive"/>
         <!-- 模块名称 -->
-        <Property name="LOG_MODULE_NAME" value="springBootDemo"/>
+        <Property name="LOG_MODULE_NAME" value="boot-mysql"/>
         <!-- interval属性用来指定多久滚动一次，单位根据filePattern变化 -->
         <Property name="LOG_TIME" value="1"/>
         <!-- 日志文件大小，超过这个大小将滚动一次 -->
