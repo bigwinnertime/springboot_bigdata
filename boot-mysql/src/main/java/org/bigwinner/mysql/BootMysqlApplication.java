@@ -1,22 +1,27 @@
 package org.bigwinner.mysql;
 
 import cn.hutool.json.JSONUtil;
+import org.bigwinner.mysql.service.impl.UidServiceImpl;
 import org.bigwinner.mysql.utils.DruidUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-@SpringBootApplication(exclude = {DataSourceAutoConfiguration.class})
+/**
+ * @author lsl_mac
+ */
+@SpringBootApplication()
 public class BootMysqlApplication {
 	private static ShardingJdbcDemo shardingJdbcDemo;
+	private static UidServiceImpl uidService;
 
 	@Autowired
-	public BootMysqlApplication(ShardingJdbcDemo demo) {
+	public BootMysqlApplication(ShardingJdbcDemo demo, UidServiceImpl uid) {
 		BootMysqlApplication.shardingJdbcDemo = demo;
+		BootMysqlApplication.uidService = uid;
 
 	}
 
@@ -28,7 +33,7 @@ public class BootMysqlApplication {
 		DruidUtils.initShardingDataSource();
 		while (true) {
 			String timeStr = df.format(new Date());
-			String jsonStr = "{\"LOG_ID\":\"111111111\",\"IDENTITY_NAME\":\"aaaaa\",\"RESOURCE_KIND\":\"11\",\"RESOURCE_CODE\":\"22\",\"MODULE_ID\":\"bbbb\",\"MODULE_NAME\":\"cccc\",\"OPERATE_CONTENT\":\"ll\",\"OPERATE_TIME\":\""+ timeStr +"\"}";
+			String jsonStr = "{\"LOG_ID\":\""+ uidService.getUid() +"\",\"IDENTITY_NAME\":\"aaaaa\",\"RESOURCE_KIND\":\"11\",\"RESOURCE_CODE\":\"22\",\"MODULE_ID\":\"bbbb\",\"MODULE_NAME\":\"cccc\",\"OPERATE_CONTENT\":\"ll\",\"OPERATE_TIME\":\""+ timeStr +"\"}";
 			shardingJdbcDemo.shardingJDBCData(JSONUtil.parseObj(jsonStr));
 			try {
 				Thread.sleep(10000);
